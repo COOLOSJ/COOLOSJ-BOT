@@ -3,10 +3,10 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('img')
-        .setDescription('Send an image based on a prompt')
+        .setDescription('Send a random image')
         .addStringOption(option =>
             option.setName('prompt')
-                .setDescription('Image to search')
+                .setDescription('Image topic')
                 .setRequired(true)
         ),
 
@@ -14,7 +14,7 @@ module.exports = {
 
         const prompt = interaction.options.getString('prompt');
 
-        const imageUrl = `https://source.unsplash.com/800x600/?${prompt}`;
+        const imageUrl = `https://picsum.photos/800/600`;
 
         const embed = new EmbedBuilder()
             .setTitle(`Image result for "${prompt}"`)
