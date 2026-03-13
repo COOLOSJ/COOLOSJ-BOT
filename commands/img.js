@@ -1,10 +1,9 @@
-const { SlashCommandBuilder, AttachmentBuilder } = require('discord.js');
-const axios = require('axios');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('img')
-        .setDescription('Search and send an image')
+        .setDescription('Send an image based on a prompt')
         .addStringOption(option =>
             option.setName('prompt')
                 .setDescription('Image to search')
@@ -13,21 +12,16 @@ module.exports = {
 
     async execute(interaction) {
 
-        await interaction.deferReply();
-
         const prompt = interaction.options.getString('prompt');
 
-        const url = `https://source.unsplash.com/800x600/?${prompt}`;
+        const imageUrl = `https://source.unsplash.com/800x600/?${prompt}`;
 
-        const response = await axios({
-            url: url,
-            method: 'GET',
-            responseType: 'arraybuffer'
-        });
+        const embed = new EmbedBuilder()
+            .setTitle(`Image result for "${prompt}"`)
+            .setImage(imageUrl)
+            .setColor(0x00AE86);
 
-        const attachment = new AttachmentBuilder(response.data, { name: 'image.jpg' });
-
-        await interaction.editReply({ files: [attachment] });
+        await interaction.reply({ embeds: [embed] });
 
     }
 };
